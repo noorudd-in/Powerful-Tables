@@ -5,13 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Student Registration Form - Nooruddin</title>
+    <title>Powerful Table</title>
   </head>
   <body>
+    <div id="headerBtn">
+      <span
+        >Current Theme:
+        <select name="theme" id="theme" onchange="changeTheme()">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </span>
+      <span
+        >Role:
+        <select name="role" id="role" onchange="currentRole()">
+          <option value="1">Teacher</option>
+          <option value="0">Student</option>
+        </select>
+      </span>
+    </div>
     <header>
       <h1>Student Registration Form</h1>
     </header>
-    <form onsubmit="formSubmit(event)" method="post" id="form">
+    <form action="" onsubmit="formSubmit(event)" method="post" id="form">
       <label for="fullname">Name:</label>
       <input type="text" id="fullname" name="fullname" required />
       <br /><br />
@@ -59,88 +75,203 @@
       <input type="text" id="number" name="number" maxlength="10" required />
       <br /><br />
 
-      <button type="reset" id="resetBtn">Reset</button>
-      <button type="submit" id="submitBtn" value="submit">Submit</button>
-      <!-- <button style="display: none" type="button" id="updateBtn" onclick="a()"> 
-        Update
-      </button>
-      -->
+      <button type="reset" onclick="return resetConfirm()">Reset</button>
+      <button type="submit" id="submitBtn">Submit</button>
     </form>
-
-    <!--
-
-      <form onsubmit="formSubmit(event)" method="post" id="form">
-      <div class="form-group">
-        <label for="fullname">Name:</label>
-        <input type="text" id="fullname" name="fullname" required />
-      </div>
-
-      <div class="form-group">
-        <label for="dob">DOB:</label>
-        <input type="date" id="dob" name="dob" required />
-      </div>
-
-      <div class="form-group">
-        <label for="sex">Sex:</label>
-
-        <input type="radio" id="male" name="sex" value="male" required />
-        <label for="male">Male</label>
-
-        <input type="radio" id="female" name="sex" value="female" required />
-        <label for="female">Female</label>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" />
-      </div>
-
-      <div class="form-group">
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" required />
-      </div>
-      <div class="form-group">
-        <label for="school">School:</label>
-        <select name="school" id="school"></select>
-      </div>
-
-      <div class="form-group">
-        <label for="department">Department:</label>
-        <select
-          name="department"
-          id="department"
-          onchange="dynamicCourse(event)"
-        ></select>
-      </div>
-
-      <div class="form-group">
-        <label for="course">Course:</label>
-        <select name="course" id="course">
-          <option value="Select">Select Department First</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="number">Mobile Number:</label>
-        <input type="text" id="number" name="number" maxlength="10" required />
-      </div>
-
-      <div class="form-group">
-        <button type="reset" id="resetBtn">Reset</button>
-        <button type="submit" id="submitBtn">Submit</button>
-      </div>
-      
-    </form>
-    -->
     <hr />
     <main>
-      <button id="deleteAll" onclick="deleteAll()">Delete All</button>
-      <button id="printData" onclick="printData()">Print</button>
-      <span id="search"
-        >Search: <input type="search" name="search" oninput="searching(event)"
-      /></span>
+      <div id="features">
+        <button id="deleteAll" onclick="deleteAll()">Delete All</button>
+        <span
+          >Export:
+          <select name="exportData" id="exportData" onchange="exportData()">
+            <option value="select">Select</option>
+            <option value="pdf">Print/Save as PDF</option>
+            <option value="xlsx">Export as Excel Sheet</option>
+            <option value="csv">Export as CSV</option>
+            <option value="json">Export as JSON</option>
+          </select></span
+        >
+        <span id="importFeaure"
+          >Import CSV:
+          <input
+            type="file"
+            accept=".csv"
+            name="import"
+            id="import"
+            onchange="importData()"
+        /></span>
+        <span
+          >Version History:
+          <select
+            name="versionHistory"
+            id="versionHistory"
+            onchange="renderVersion()"
+          >
+            <option value="select">Select</option>
+            <option value="-1">last Version</option>
+            <option value="-2">2nd Last Version</option>
+            <option value="-3">3rd Last Version</option>
+          </select></span
+        >
+        <span
+          >Searching:
+          <input
+            type="checkbox"
+            name="askSearching"
+            id="askSearching"
+            onchange="toggleSearching(event)"
+          />
+        </span>
+        <span
+          >Sorting:
+          <input
+            type="checkbox"
+            name="askSorting"
+            id="askSorting"
+            onchange="toggleSorting(event)"
+          />
+        </span>
+      </div>
       <table id="table">
         <thead>
+          <tr id="searching" style="display: none">
+            <th>
+              <input
+                id="namesearch"
+                size="10"
+                oninput="searching(event, 'fullname')"
+              />
+            </th>
+            <th>
+              <input
+                id="dobsearch"
+                size="5"
+                oninput="searching(event, 'dob')"
+              />
+            </th>
+            <th>
+              <input
+                id="sexsearch"
+                size="5"
+                oninput="searching(event, 'sex')"
+              />
+            </th>
+            <th>
+              <input
+                id="emailsearch"
+                size="5"
+                oninput="searching(event, 'email')"
+              />
+            </th>
+            <th>
+              <input
+                id="addresssearch"
+                size="5"
+                oninput="searching(event, 'address')"
+              />
+            </th>
+            <th>
+              <input
+                id="schoolsearch"
+                size="5"
+                oninput="searching(event, 'school')"
+              />
+            </th>
+            <th>
+              <input
+                id="departmentsearch"
+                size="5"
+                oninput="searching(event, 'department')"
+              />
+            </th>
+            <th>
+              <input
+                id="coursesearch"
+                size="5"
+                oninput="searching(event, 'course')"
+              />
+            </th>
+            <th>
+              <input
+                id="numbersearch"
+                size="5"
+                oninput="searching(event, 'number')"
+              />
+            </th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr id="sorting" style="display: none">
+            <th>
+              <select id="namesort" onchange="sorting(event, 'fullname')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select id="dobsort" onchange="sorting(event, 'dob')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select id="sexsort" onchange="sorting(event, 'sex')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select id="emailsort" onchange="sorting(event, 'email')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select id="addresssort" onchange="sorting(event, 'address')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select id="schoolsort" onchange="sorting(event, 'school')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select
+                id="departmentsort"
+                onchange="sorting(event, 'department')"
+              >
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select id="coursesort" onchange="sorting(event, 'course')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th>
+              <select id="numbersort" onchange="sorting(event, 'number')">
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th></th>
+            <th></th>
+          </tr>
           <tr>
             <th>Name</th>
             <th>DOB</th>
@@ -151,11 +282,10 @@
             <th>Department</th>
             <th>Course</th>
             <th>Mobile Number</th>
-            <th>Edit</th>
-            <th>Delete</th>
-            <th>
+            <th id="editOnTable">Edit</th>
+            <th id="deleteOnTable">
               <button id="bulkdelete" onclick="bulkDelete()" disabled>
-                Bulk Delete
+                Delete
               </button>
             </th>
           </tr>
@@ -163,6 +293,7 @@
         <tbody id="tablebody"></tbody>
       </table>
     </main>
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
   </body>
   <script src="script.js"></script>
 </html>
