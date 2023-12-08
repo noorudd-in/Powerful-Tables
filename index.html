@@ -1,252 +1,451 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
+    <!--Author: Nooruddin Shaikh-->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="style.css" />
-    <title>Powerful Table</title>
+    <title>Powerful Tables</title>
   </head>
   <body>
-    <div id="headerBtn">
-      <span
-        >Current Theme:
-        <select name="theme" id="theme" onchange="changeTheme()">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-      </span>
-      <span
-        >Role:
-        <select name="role" id="role" onchange="currentRole()">
-          <option value="1">Teacher</option>
-          <option value="0">Student</option>
-        </select>
-      </span>
-    </div>
-    <header>
-      <h1>Student Registration Form</h1>
-    </header>
-    <form action="" onsubmit="formSubmit(event)" method="post" id="form">
-      <label for="fullname">Name:</label>
-      <input type="text" id="fullname" name="fullname" required />
-      <br /><br />
-
-      <label for="dob">DOB:</label>
-      <input type="date" id="dob" name="dob" required />
-      <br /><br />
-
-      <label for="sex">Sex:</label>
-
-      <input type="radio" id="male" name="sex" value="male" required />
-      <label for="male">Male</label>
-
-      <input type="radio" id="female" name="sex" value="female" required />
-      <label for="female">Female</label>
-      <br /><br />
-
-      <label for="email">Email:</label>
-      <input type="text" id="email" name="email" />
-      <br /><br />
-
-      <label for="address">Address:</label>
-      <input type="text" id="address" name="address" required />
-      <br /><br />
-
-      <label for="school">School:</label>
-      <select name="school" id="school"></select>
-      <br /><br />
-
-      <label for="department">Department:</label>
-      <select
-        name="department"
-        id="department"
-        onchange="dynamicCourse(event)"
-      ></select>
-      <br /><br />
-
-      <label for="course">Course:</label>
-      <select name="course" id="course">
-        <option value="Select">Select Department First</option>
-      </select>
-      <br /><br />
-
-      <label for="number">Mobile Number:</label>
-      <input type="text" id="number" name="number" maxlength="10" required />
-      <br /><br />
-
-      <button type="reset" onclick="return resetConfirm()">Reset</button>
-      <button type="submit" id="submitBtn">Submit</button>
-    </form>
-    <hr />
-    <main>
-      <div id="features">
-        <button id="deleteAll" onclick="deleteAll()">Delete All</button>
-        <span
-          >Export:
-          <select name="exportData" id="exportData" onchange="exportData()">
-            <option value="select">Select</option>
-            <option value="pdf">Print/Save as PDF</option>
-            <option value="xlsx">Export as Excel Sheet</option>
-            <option value="csv">Export as CSV</option>
-            <option value="json">Export as JSON</option>
-          </select></span
-        >
-        <span id="importFeaure"
-          >Import CSV:
-          <input
-            type="file"
-            accept=".csv"
-            name="import"
-            id="import"
-            onchange="importData()"
-        /></span>
-        <span
-          >Version History:
-          <select
-            name="versionHistory"
-            id="versionHistory"
-            onchange="renderVersion()"
+    <!--Top two buttons to change the role and mode-->
+    <div class="container" id="top-buttons">
+      <div class="row mt-2">
+        <div class="col text-start">
+          <label>Role:</label>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="changeRole"
+            role="admin"
+            onclick="changeRole()"
           >
-            <option value="select">Select</option>
-            <option value="-1">last Version</option>
-            <option value="-2">2nd Last Version</option>
-            <option value="-3">3rd Last Version</option>
-          </select></span
-        >
-        <span
-          >Searching:
-          <input
-            type="checkbox"
-            name="askSearching"
-            id="askSearching"
-            onchange="toggleSearching(event)"
-          />
-        </span>
-        <span
-          >Sorting:
-          <input
-            type="checkbox"
-            name="askSorting"
-            id="askSorting"
-            onchange="toggleSorting(event)"
-          />
-        </span>
+            Admin
+          </button>
+        </div>
+        <div class="col-6 text-center">
+          <h2>Student Registration Form</h2>
+        </div>
+        <div class="col text-end">
+          <label>Theme:</label>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="changeTheme"
+            onclick="changeTheme()"
+          >
+            Dark
+          </button>
+        </div>
       </div>
-      <table id="table">
+    </div>
+
+    <!--Main Form-->
+    <div class="container mt-3">
+      <form
+        class="row g-3"
+        action=""
+        onsubmit="formSubmit(event)"
+        method="post"
+        id="form"
+      >
+        <div class="col-md-6">
+          <label for="fullname" class="form-label">Full Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="fullname"
+            name="fullname"
+            required
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="dob" class="form-label">DOB</label>
+          <input
+            type="date"
+            class="form-control"
+            id="dob"
+            name="dob"
+            required
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="number" class="form-label">Mobile Number</label>
+          <input
+            type="text"
+            class="form-control"
+            id="number"
+            name="number"
+            maxlength="10"
+            required
+          />
+        </div>
+        <div class="col-md-4 pt-2">
+          <div>
+            <label for="sex" class="form-label">Sex</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="sex"
+              id="male"
+              value="male"
+            />
+            <label class="form-check-label" for="male">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="sex"
+              id="female"
+              value="female"
+            />
+            <label class="form-check-label" for="female">Female</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="sex"
+              id="others"
+              value="others"
+            />
+            <label class="form-check-label" for="others">Others</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="address" class="form-label">Address</label>
+          <textarea
+            class="form-control"
+            id="address"
+            rows="2"
+            name="address"
+          ></textarea>
+        </div>
+        <div class="col-md-4">
+          <label for="school" class="form-label">School</label>
+          <select id="school" class="form-select" name="school"></select>
+        </div>
+        <div class="col-md-4">
+          <label for="department" class="form-label">Department</label>
+          <select
+            id="department"
+            class="form-select"
+            name="department"
+            onchange="dynamicCourse(event)"
+          ></select>
+        </div>
+        <div class="col-md-4">
+          <label for="course" class="form-label">Course</label>
+          <select id="course" class="form-select" name="course">
+            <option selected>Select Department First</option>
+          </select>
+        </div>
+
+        <div class="col-6">
+          <button
+            type="reset"
+            class="btn btn-primary"
+            onclick="return resetConfirm()"
+          >
+            Reset
+          </button>
+        </div>
+        <div class="col-6 text-end">
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <hr />
+
+    <!--Table Features-->
+    <div class="container mt-2" id="features">
+      <div class="row">
+        <div class="col-6 col-sm-3 m-auto mt-3">
+          <div class="input-group">
+            <button
+              class="btn btn-primary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Export
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" onclick="exportData('pdf')"
+                  >Print/Save as PDF</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" onclick="exportData('xlsx')"
+                  >Export as Excel Sheet</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" onclick="exportData('csv')"
+                  >Export as CSV</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" onclick="exportData('json')"
+                  >Export as JSON</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-sm-3 m-auto mt-3">
+          <div class="input-group">
+            <button
+              class="btn btn-primary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Import
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                Import CSV:
+                <input
+                  type="file"
+                  accept=".csv"
+                  name="import"
+                  id="import"
+                  onchange="importData()"
+                />
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-sm-3 m-auto mt-3">
+          <div class="input-group">
+            <button
+              class="btn btn-primary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Version History
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" onclick="renderVersion(-1)"
+                  >Last Version</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" onclick="renderVersion(-2)"
+                  >2nd Last Version</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" onclick="renderVersion(-3)"
+                  >3rd Last Version</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-6 col-sm-3 m-auto mt-4">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="askSearching"
+              id="askSearching"
+              onchange="toggleSearching(event)"
+            />
+            <label class="form-check-label" for="askSearching">Searching</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="askSorting"
+              id="askSorting"
+              onchange="toggleSorting(event)"
+            />
+            <label class="form-check-label" for="askSorting">Sorting</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Table-->
+    <div class="container mt-4" style="overflow-x: auto">
+      <table class="table table-hover" id="table">
         <thead>
           <tr id="searching" style="display: none">
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="namesearch"
                 size="10"
                 oninput="searching(event, 'fullname')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="dobsearch"
                 size="5"
                 oninput="searching(event, 'dob')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="sexsearch"
                 size="5"
                 oninput="searching(event, 'sex')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="emailsearch"
                 size="5"
                 oninput="searching(event, 'email')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="addresssearch"
                 size="5"
                 oninput="searching(event, 'address')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="schoolsearch"
                 size="5"
                 oninput="searching(event, 'school')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="departmentsearch"
                 size="5"
                 oninput="searching(event, 'department')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="coursesearch"
                 size="5"
                 oninput="searching(event, 'course')"
               />
             </th>
-            <th>
+            <th scope="col">
               <input
+                class="form-control"
                 id="numbersearch"
                 size="5"
                 oninput="searching(event, 'number')"
               />
             </th>
-            <th></th>
-            <th></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
           <tr id="sorting" style="display: none">
-            <th>
-              <select id="namesort" onchange="sorting(event, 'fullname')">
-                <option value="select">Select</option>
-                <option value="asc">Ascending</option>
-                <option value="des">Descending</option>
-              </select>
-            </th>
-            <th>
-              <select id="dobsort" onchange="sorting(event, 'dob')">
-                <option value="select">Select</option>
-                <option value="asc">Ascending</option>
-                <option value="des">Descending</option>
-              </select>
-            </th>
-            <th>
-              <select id="sexsort" onchange="sorting(event, 'sex')">
-                <option value="select">Select</option>
-                <option value="asc">Ascending</option>
-                <option value="des">Descending</option>
-              </select>
-            </th>
-            <th>
-              <select id="emailsort" onchange="sorting(event, 'email')">
-                <option value="select">Select</option>
-                <option value="asc">Ascending</option>
-                <option value="des">Descending</option>
-              </select>
-            </th>
-            <th>
-              <select id="addresssort" onchange="sorting(event, 'address')">
-                <option value="select">Select</option>
-                <option value="asc">Ascending</option>
-                <option value="des">Descending</option>
-              </select>
-            </th>
-            <th>
-              <select id="schoolsort" onchange="sorting(event, 'school')">
-                <option value="select">Select</option>
-                <option value="asc">Ascending</option>
-                <option value="des">Descending</option>
-              </select>
-            </th>
-            <th>
+            <th scope="col">
               <select
+                class="form-select"
+                id="namesort"
+                onchange="sorting(event, 'fullname')"
+              >
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th scope="col">
+              <select
+                class="form-select"
+                id="dobsort"
+                onchange="sorting(event, 'dob')"
+              >
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th scope="col">
+              <select
+                class="form-select"
+                id="sexsort"
+                onchange="sorting(event, 'sex')"
+              >
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th scope="col">
+              <select
+                class="form-select"
+                id="emailsort"
+                onchange="sorting(event, 'email')"
+              >
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th scope="col">
+              <select
+                class="form-select"
+                id="addresssort"
+                onchange="sorting(event, 'address')"
+              >
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th scope="col">
+              <select
+                class="form-select"
+                id="schoolsort"
+                onchange="sorting(event, 'school')"
+              >
+                <option value="select">Select</option>
+                <option value="asc">Ascending</option>
+                <option value="des">Descending</option>
+              </select>
+            </th>
+            <th scope="col">
+              <select
+                class="form-select"
                 id="departmentsort"
                 onchange="sorting(event, 'department')"
               >
@@ -255,36 +454,49 @@
                 <option value="des">Descending</option>
               </select>
             </th>
-            <th>
-              <select id="coursesort" onchange="sorting(event, 'course')">
+            <th scope="col">
+              <select
+                class="form-select"
+                id="coursesort"
+                onchange="sorting(event, 'course')"
+              >
                 <option value="select">Select</option>
                 <option value="asc">Ascending</option>
                 <option value="des">Descending</option>
               </select>
             </th>
-            <th>
-              <select id="numbersort" onchange="sorting(event, 'number')">
+            <th scope="col">
+              <select
+                class="form-select"
+                id="numbersort"
+                onchange="sorting(event, 'number')"
+              >
                 <option value="select">Select</option>
                 <option value="asc">Ascending</option>
                 <option value="des">Descending</option>
               </select>
             </th>
-            <th></th>
-            <th></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
           <tr>
-            <th>Name</th>
-            <th>DOB</th>
-            <th>Sex</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>School</th>
-            <th>Department</th>
-            <th>Course</th>
-            <th>Mobile Number</th>
+            <th scope="col">Name</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Sex</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">School</th>
+            <th scope="col">Department</th>
+            <th scope="col">Course</th>
+            <th scope="col">Mobile Number</th>
             <th id="editOnTable">Edit</th>
             <th id="deleteOnTable">
-              <button id="bulkdelete" onclick="bulkDelete()" disabled>
+              <button
+                class="btn btn-primary"
+                id="bulkdelete"
+                onclick="bulkDelete()"
+                disabled
+              >
                 Delete
               </button>
             </th>
@@ -292,8 +504,14 @@
         </thead>
         <tbody id="tablebody"></tbody>
       </table>
-    </main>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
   </body>
-  <script src="script.js"></script>
 </html>
